@@ -20,7 +20,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       // 위젯 층층이 쌓기
       body: Stack(
         children: [
-          // 어디에 위치 시킬지 정함 반드시 child 필요
+          // 어디에 위치 시킬지 정함 반드시 child
+          // 배경
           Positioned(
             top: 0,
             right: 0,
@@ -46,7 +47,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                   children: [
                     // 텍스트나 문단을 모아서 구성하게 해줌 TextSpan
                     RichText(
-                      text: const TextSpan(
+                      text: TextSpan(
                         text: 'Welcome',
                         style: TextStyle(
                           letterSpacing: 1.0,
@@ -55,7 +56,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                         ),
                         children: [
                           TextSpan(
-                            text: ' to Chat',
+                            text: isSignupScreen ? ' to App' : ' back',
                             style: TextStyle(
                               letterSpacing: 1.0,
                               fontSize: 25.0,
@@ -69,8 +70,10 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                     const SizedBox(
                       height: 5.0,
                     ),
-                    const Text(
-                      'signup to continue',
+                    Text(
+                      isSignupScreen
+                          ? 'Signup to continue'
+                          : 'Signin to continue',
                       style: TextStyle(
                         letterSpacing: 1.0,
                         color: Colors.white,
@@ -81,11 +84,15 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
               ),
             ),
           ),
-          Positioned(
+          // 텍스트폼필드
+          // 애니메이션 효과 넣기
+          AnimatedPositioned(
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeIn,
             top: 180.0,
             child: Container(
               padding: const EdgeInsets.all(20.0),
-              height: 280,
+              height: isSignupScreen ? 280.0 : 250.0,
               // 디바이스 실제 너비값 가지고 와서 사용
               width: MediaQuery.of(context).size.width - 40.0,
               // 마진도 여기서 줄 수 있네
@@ -168,44 +175,279 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                       ),
                     ],
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10.0),
-                    // 값 유효성 겁사를 위해 Form
-                    child: Form(
-                      child: Column(
-                        children: [
-                          // 쉽게 값을 받아오는 장점이 있음
-                          TextFormField(
-                            // 텍스트 필드 꾸미기
-                            decoration: const InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.account_circle,
-                                color: Palette.iconColor,
-                              ),
-                              // 텍스트필드를 감싸는 위젯
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Palette.textColor1),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(35),
+                  // inline if
+                  if (isSignupScreen)
+                    Container(
+                      margin: EdgeInsets.only(top: 20.0),
+                      // 값 유효성 겁사를 위해 Form
+                      child: Form(
+                        child: Column(
+                          children: [
+                            // 쉽게 값을 받아오는 장점이 있음
+                            TextFormField(
+                              // 텍스트 필드 꾸미기
+                              decoration: const InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.account_circle,
+                                  color: Palette.iconColor,
                                 ),
-                              ),
-                              // 텍스트필드가 활성화 상태일 때 테두리 그대로 유지하기 위해서 위에 코드 복붙
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Palette.textColor1),
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(35),
+                                // 텍스트필드를 감싸는 위젯
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Palette.textColor1),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(35),
+                                  ),
                                 ),
+                                // 텍스트필드가 활성화 상태일 때 테두리 그대로 유지하기 위해서 위에 코드 복붙
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Palette.textColor1),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(35),
+                                  ),
+                                ),
+                                hintText: 'User name',
+                                hintStyle: TextStyle(
+                                  fontSize: 14,
+                                  color: Palette.textColor1,
+                                ),
+                                // 텍스트 필드 폭 줄이기
+                                contentPadding: EdgeInsets.all(10),
                               ),
                             ),
-                          ),
-                        ],
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            TextFormField(
+                              // 텍스트 필드 꾸미기
+                              decoration: const InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.mail,
+                                  color: Palette.iconColor,
+                                ),
+                                // 텍스트필드를 감싸는 위젯
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Palette.textColor1),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(35),
+                                  ),
+                                ),
+                                // 텍스트필드가 활성화 상태일 때 테두리 그대로 유지하기 위해서 위에 코드 복붙
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Palette.textColor1),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(35),
+                                  ),
+                                ),
+                                hintText: 'e-mail',
+                                hintStyle: TextStyle(
+                                  fontSize: 14,
+                                  color: Palette.textColor1,
+                                ),
+                                // 텍스트 필드 폭 줄이기
+                                contentPadding: EdgeInsets.all(10),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            TextFormField(
+                              // 텍스트 필드 꾸미기
+                              decoration: const InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.lock,
+                                  color: Palette.iconColor,
+                                ),
+                                // 텍스트필드를 감싸는 위젯
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Palette.textColor1),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(35),
+                                  ),
+                                ),
+                                // 텍스트필드가 활성화 상태일 때 테두리 그대로 유지하기 위해서 위에 코드 복붙
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Palette.textColor1),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(35),
+                                  ),
+                                ),
+                                hintText: 'password',
+                                hintStyle: TextStyle(
+                                  fontSize: 14,
+                                  color: Palette.textColor1,
+                                ),
+                                // 텍스트 필드 폭 줄이기
+                                contentPadding: EdgeInsets.all(10),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
+
+                  //inline if
+                  if (!isSignupScreen)
+                    Container(
+                      margin: EdgeInsets.only(top: 20),
+                      child: Form(
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              // 텍스트 필드 꾸미기
+                              decoration: const InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.account_circle,
+                                  color: Palette.iconColor,
+                                ),
+                                // 텍스트필드를 감싸는 위젯
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Palette.textColor1),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(35),
+                                  ),
+                                ),
+                                // 텍스트필드가 활성화 상태일 때 테두리 그대로 유지하기 위해서 위에 코드 복붙
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Palette.textColor1),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(35),
+                                  ),
+                                ),
+                                hintText: 'User name',
+                                hintStyle: TextStyle(
+                                  fontSize: 14,
+                                  color: Palette.textColor1,
+                                ),
+                                // 텍스트 필드 폭 줄이기
+                                contentPadding: EdgeInsets.all(10),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            TextFormField(
+                              // 텍스트 필드 꾸미기
+                              decoration: const InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.lock,
+                                  color: Palette.iconColor,
+                                ),
+                                // 텍스트필드를 감싸는 위젯
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Palette.textColor1),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(35),
+                                  ),
+                                ),
+                                // 텍스트필드가 활성화 상태일 때 테두리 그대로 유지하기 위해서 위에 코드 복붙
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Palette.textColor1),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(35),
+                                  ),
+                                ),
+                                hintText: 'password',
+                                hintStyle: TextStyle(
+                                  fontSize: 14,
+                                  color: Palette.textColor1,
+                                ),
+                                // 텍스트 필드 폭 줄이기
+                                contentPadding: EdgeInsets.all(10),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
                 ],
               ),
+            ),
+          ),
+          // 로그인 버튼
+          AnimatedPositioned(
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeIn,
+            top: isSignupScreen ? 430 : 390,
+            left: 0,
+            right: 0,
+            //center로 안 감싸면 left 0 right0 부분에서 원이 최대한 자리 차지해버려서 타원되버림
+            child: Center(
+              child: Container(
+                padding: EdgeInsets.all(15),
+                height: 90,
+                width: 90,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        colors: [
+                          Colors.blueAccent,
+                          Colors.indigo,
+                        ],
+                        // 그라디에이션 효과 방향 지정
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight),
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.3),
+                        spreadRadius: 1,
+                        blurRadius: 1,
+                        // 그림자의 거리
+                        offset: Offset(0, 1),
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                    Icons.arrow_forward,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          // 하단 부분
+          Positioned(
+            top: MediaQuery.of(context).size.height - 125,
+            // left 0 right 0 -> 포지션 위젯이 가로방향 전체 차지하도록
+            left: 0,
+            right: 0,
+            child: Column(
+              children: [
+                Text(isSignupScreen  ? 'or Signup with' : 'or Sign with'),
+                SizedBox(
+                  height: 10,
+                ),
+                // 아이콘이 배치된 텍스트 버튼
+                TextButton.icon(
+                  onPressed: () {},
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    // 최소 가로 155 세로 40
+                    minimumSize: Size(155, 40),
+                    // 버튼 모양잡기
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    backgroundColor: Palette.googleColor,
+                  ),
+                  icon: Icon(Icons.add),
+                  label: Text('Google'),
+                ),
+              ],
             ),
           ),
         ],
