@@ -36,7 +36,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       backgroundColor: Palette.backgroundColor,
       // 위젯 층층이 쌓기
       body: GestureDetector(
-        onTap: (){
+        onTap: () {
           FocusScope.of(context).unfocus();
         },
         child: Stack(
@@ -219,7 +219,10 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                   },
                                   // 사용자가 입력한 값을 저장
                                   onSaved: (value) {
-                                    userName=value!;
+                                    userName = value!;
+                                  },
+                                  onChanged: (value) {
+                                    userName = value;
                                   },
                                   // 텍스트 필드 꾸미기
                                   decoration: const InputDecoration(
@@ -256,16 +259,22 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                   height: 10.0,
                                 ),
                                 TextFormField(
+                                  keyboardType: TextInputType.emailAddress,
                                   key: ValueKey(2),
                                   validator: (value) {
-                                    if (value!.isEmpty || !(value.contains('@'))) {
+                                    if (value!.isEmpty ||
+                                        !(value.contains('@'))) {
                                       return 'Please enter a valid email address';
                                     }
                                     return null;
                                   },
                                   onSaved: (value) {
-                                    userEmail=value!;
+                                    userEmail = value!;
                                   },
+                                  onChanged: (value) {
+                                    userEmail = value!;
+                                  },
+
                                   // 텍스트 필드 꾸미기
                                   decoration: const InputDecoration(
                                     prefixIcon: Icon(
@@ -301,6 +310,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                   height: 10.0,
                                 ),
                                 TextFormField(
+                                  obscureText: true,
                                   key: ValueKey(3),
                                   validator: (value) {
                                     if (value!.isEmpty || value.length < 6) {
@@ -309,7 +319,10 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                     return null;
                                   },
                                   onSaved: (value) {
-                                    userPassword=value!;
+                                    userPassword = value!;
+                                  },
+                                  onChanged: (value) {
+                                    userPassword = value!;
                                   },
                                   // 텍스트 필드 꾸미기
                                   decoration: const InputDecoration(
@@ -365,7 +378,10 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                     return null;
                                   },
                                   onSaved: (value) {
-                                    userName=value!;
+                                    userName = value!;
+                                  },
+                                  onChanged: (value) {
+                                    userName = value!;
                                   },
                                   // 텍스트 필드 꾸미기
                                   decoration: const InputDecoration(
@@ -411,7 +427,10 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                     return null;
                                   },
                                   onSaved: (value) {
-                                    userPassword=value!;
+                                    userPassword = value!;
+                                  },
+                                  onChanged: (value) {
+                                    userPassword = value!;
                                   },
                                   decoration: const InputDecoration(
                                     prefixIcon: Icon(
@@ -470,7 +489,12 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: GestureDetector(
-                    onTap: _tryValidation,
+                    onTap: (){
+                      _tryValidation();
+                      print(userName );
+                      print(userPassword);
+                      print(userEmail);
+                    },
                     child: Container(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
@@ -505,7 +529,9 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
             AnimatedPositioned(
               duration: Duration(milliseconds: 500),
               curve: Curves.easeIn,
-              top: isSignupScreen ? MediaQuery.of(context).size.height - 125 : MediaQuery.of(context).size.height - 165,
+              top: isSignupScreen
+                  ? MediaQuery.of(context).size.height - 125
+                  : MediaQuery.of(context).size.height - 165,
               // left 0 right 0 -> 포지션 위젯이 가로방향 전체 차지하도록
               left: 0,
               right: 0,
