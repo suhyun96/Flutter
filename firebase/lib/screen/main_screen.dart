@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../config/palette.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginSignupScreen extends StatefulWidget {
   const LoginSignupScreen({Key? key}) : super(key: key);
@@ -12,7 +13,8 @@ class LoginSignupScreen extends StatefulWidget {
 class _LoginSignupScreenState extends State<LoginSignupScreen> {
   // 어느 화면 내보낼지 확인
   bool isSignupScreen = true;
-
+  // 해당 인스턴스는 사용자 등록과 인증에 사용 
+  final _authentication = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
 
   String userName = '';
@@ -490,10 +492,13 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                   ),
                   child: GestureDetector(
                     onTap: (){
+                      if(isSignupScreen){
+
+                      }
                       _tryValidation();
-                      print(userName );
-                      print(userPassword);
-                      print(userEmail);
+                      // print(userName );
+                      // print(userPassword);
+                      // print(userEmail);
                     },
                     child: Container(
                       decoration: BoxDecoration(
