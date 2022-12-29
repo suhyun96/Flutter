@@ -5,18 +5,23 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:crclib/catalog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:firebase/main.dart';
+import 'package:crc/crc.dart';
+import 'package:crclib/crclib.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-  //  await tester.pumpWidget(const MyApp());
+    // Build our app and trigger a framCr
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
+    final crc = Crc8().convert([1,2,3,4,5]);
+    print(crc);
+
+
+
     expect(find.text('1'), findsNothing);
 
     // Tap the '+' icon and trigger a frame.

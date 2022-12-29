@@ -64,6 +64,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.16.0"
+  crc:
+    dependency: "direct dev"
+    description:
+      name: crc
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
+  crclib:
+    dependency: "direct dev"
+    description:
+      name: crclib
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.0"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -252,6 +266,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.12"
+  tuple:
+    dependency: transitive
+    description:
+      name: tuple
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   typed_data:
     dependency: transitive
     description:

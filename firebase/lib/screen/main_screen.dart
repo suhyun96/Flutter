@@ -13,7 +13,7 @@ class LoginSignupScreen extends StatefulWidget {
 class _LoginSignupScreenState extends State<LoginSignupScreen> {
   // 어느 화면 내보낼지 확인
   bool isSignupScreen = true;
-  // 해당 인스턴스는 사용자 등록과 인증에 사용 
+  // 해당 인스턴스는 사용자 등록과 인증에 사용
   final _authentication = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
 
