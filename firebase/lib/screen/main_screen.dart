@@ -1,3 +1,4 @@
+import 'package:firebase/screen/chat_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../config/palette.dart';
@@ -380,15 +381,15 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                     return null;
                                   },
                                   onSaved: (value) {
-                                    userName = value!;
+                                    userEmail = value!;
                                   },
                                   onChanged: (value) {
-                                    userName = value!;
+                                    userEmail = value!;
                                   },
                                   // 텍스트 필드 꾸미기
                                   decoration: const InputDecoration(
                                     prefixIcon: Icon(
-                                      Icons.account_circle,
+                                      Icons.mail,
                                       color: Palette.iconColor,
                                     ),
                                     // 텍스트필드를 감싸는 위젯
@@ -491,14 +492,61 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: GestureDetector(
-                    onTap: (){
-                      if(isSignupScreen){
-
+                    onTap: () async {
+                      // 회원가입 스크린인 경우
+                      if (isSignupScreen) {
+                        _tryValidation();
+                        try {
+                          // create ~ 메서드가 future값을 반환함
+                          final newUser = await _authentication
+                              .createUserWithEmailAndPassword(
+                            email: userEmail,
+                            password: userPassword,
+                          );
+                          //회원가입 성공시 화면 이동
+                          if (newUser.user != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return ChatScreen();
+                                },
+                              ),
+                            );
+                          }
+                        } catch (e) {
+                          print(e);
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content:
+                                Text('Please check your email and password'),
+                            backgroundColor: Colors.blue,
+                          ));
+                        }
                       }
-                      _tryValidation();
-                      // print(userName );
-                      // print(userPassword);
-                      // print(userEmail);
+
+                      if (!isSignupScreen) {
+                        //유효성 검사
+                        _tryValidation();
+                        try {
+                          // 유저가 입력한 이메일 비번 가져오기
+                          final newUser =
+                              await _authentication.signInWithEmailAndPassword(
+                            email: userEmail,
+                            password: userPassword,
+                          );
+                          // 로그인 성공시 화면 이동
+                          if (newUser.user != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return ChatScreen();
+                                },
+                              ),
+                            );
+                          }
+                        } catch (e) {print(e);}
+                      }
                     },
                     child: Container(
                       decoration: BoxDecoration(

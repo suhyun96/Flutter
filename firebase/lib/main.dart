@@ -11,7 +11,7 @@ void main() async {
   // 초기화 시킨 후 Firebase.initalizeApp() 호출
   WidgetsFlutterBinding.ensureInitialized();
   // 비동기 방식이라서 초기화 메서드가 필요함
-  Firebase.initializeApp();
+  await Firebase.initializeApp();
 
   runApp(
     MaterialApp(
