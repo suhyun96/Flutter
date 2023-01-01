@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -51,8 +52,32 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ],
       ),
-      body: Center(
-        child: Text('Chat Screen'),
+      body: StreamBuilder(
+        // 데이터 가지고 있는 컬렉션 경로
+        // snapshot() 해당 스트림에 데이터가 바뀔때 마다 새 벨류 값 전달
+        stream: FirebaseFirestore.instance
+            .collection('chats/SRH2fpqoUBPTmh11ViV3/message')
+            .snapshots(),
+        builder: (BuildContext context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          final docs = snapshot.data!.docs;
+          return ListView.builder(
+            itemCount: docs.length,
+            itemBuilder: (context, index){
+              return Container(
+                padding : EdgeInsets.all(8.0),
+                child: Text(docs[index]['text']),
+              );
+            },
+          );
+        },
       ),
     );
   }

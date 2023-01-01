@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:firebase/screen/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'screen/login_screen.dart';
+import 'package:firebase/Counter.dart';
 import 'package:crc/crc.dart';
 
 void main() async {
@@ -20,6 +23,7 @@ void main() async {
         primarySwatch: Colors.blue,
       ),
       home: LoginSignupScreen(),
+      //home: Counter(),
     ),
   );
 }
