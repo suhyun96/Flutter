@@ -4,6 +4,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../config/palette.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginSignupScreen extends StatefulWidget {
   const LoginSignupScreen({Key? key}) : super(key: key);
@@ -17,12 +18,11 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   bool isSignupScreen = true;
 
   // 대기
-  bool showSpinner =  false;
+  bool showSpinner = false;
 
   // 해당 인스턴스는 사용자 등록과 인증에 사용
   final _authentication = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
-
 
   String userName = '';
   String userEmail = '';
@@ -243,16 +243,16 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                       ),
                                       // 텍스트필드를 감싸는 위젯
                                       enabledBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Palette.textColor1),
+                                        borderSide: BorderSide(
+                                            color: Palette.textColor1),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(35),
                                         ),
                                       ),
                                       // 텍스트필드가 활성화 상태일 때 테두리 그대로 유지하기 위해서 위에 코드 복붙
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Palette.textColor1),
+                                        borderSide: BorderSide(
+                                            color: Palette.textColor1),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(35),
                                         ),
@@ -294,16 +294,16 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                       ),
                                       // 텍스트필드를 감싸는 위젯
                                       enabledBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Palette.textColor1),
+                                        borderSide: BorderSide(
+                                            color: Palette.textColor1),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(35),
                                         ),
                                       ),
                                       // 텍스트필드가 활성화 상태일 때 테두리 그대로 유지하기 위해서 위에 코드 복붙
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Palette.textColor1),
+                                        borderSide: BorderSide(
+                                            color: Palette.textColor1),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(35),
                                         ),
@@ -343,16 +343,16 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                       ),
                                       // 텍스트필드를 감싸는 위젯
                                       enabledBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Palette.textColor1),
+                                        borderSide: BorderSide(
+                                            color: Palette.textColor1),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(35),
                                         ),
                                       ),
                                       // 텍스트필드가 활성화 상태일 때 테두리 그대로 유지하기 위해서 위에 코드 복붙
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Palette.textColor1),
+                                        borderSide: BorderSide(
+                                            color: Palette.textColor1),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(35),
                                         ),
@@ -402,16 +402,16 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                       ),
                                       // 텍스트필드를 감싸는 위젯
                                       enabledBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Palette.textColor1),
+                                        borderSide: BorderSide(
+                                            color: Palette.textColor1),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(35),
                                         ),
                                       ),
                                       // 텍스트필드가 활성화 상태일 때 테두리 그대로 유지하기 위해서 위에 코드 복붙
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Palette.textColor1),
+                                        borderSide: BorderSide(
+                                            color: Palette.textColor1),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(35),
                                         ),
@@ -450,16 +450,16 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                       ),
                                       // 텍스트필드를 감싸는 위젯
                                       enabledBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Palette.textColor1),
+                                        borderSide: BorderSide(
+                                            color: Palette.textColor1),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(35),
                                         ),
                                       ),
                                       // 텍스트필드가 활성화 상태일 때 테두리 그대로 유지하기 위해서 위에 코드 복붙
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Palette.textColor1),
+                                        borderSide: BorderSide(
+                                            color: Palette.textColor1),
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(35),
                                         ),
@@ -503,18 +503,31 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                       onTap: () async {
                         setState(() {
                           // 트루가 되니까 스피너가 돌게됨
-                          showSpinner=true;
+                          showSpinner = true;
                         });
                         // 회원가입 스크린인 경우
                         if (isSignupScreen) {
                           _tryValidation();
                           try {
                             // create ~ 메서드가 future값을 반환함
+                            // createUserWith -> UserCredential 반환
                             final newUser = await _authentication
                                 .createUserWithEmailAndPassword(
                               email: userEmail,
                               password: userPassword,
                             );
+                            // user id 저장하기 - 즉석에서 데이터베이스에 생성가능
+                            // doc()로 userid 전달해두기
+                            // uid -> 식별자 역할
+                            await FirebaseFirestore.instance
+                                .collection('user')
+                                .doc(newUser.user!.uid)
+                                // set() 에서 map형태로 데이터 넣어주기
+                                // set이 future 타입이라 await 넣어주기
+                                .set(
+                              {'userName': userName, 'email': userEmail},
+                            );
+
                             //회원가입 성공시 화면 이동
                             if (newUser.user != null) {
                               Navigator.push(
@@ -527,7 +540,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                               );
                               // 회원가입이 무사히 끝나는 경우 스피너 멈추게
                               setState(() {
-                                showSpinner=false;
+                                showSpinner = false;
                               });
                             }
                           } catch (e) {
@@ -545,8 +558,8 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                           _tryValidation();
                           try {
                             // 유저가 입력한 이메일 비번 가져오기
-                            final newUser =
-                                await _authentication.signInWithEmailAndPassword(
+                            final newUser = await _authentication
+                                .signInWithEmailAndPassword(
                               email: userEmail,
                               password: userPassword,
                             );
@@ -561,10 +574,12 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                 ),
                               );
                               setState(() {
-                                showSpinner=false;
+                                showSpinner = false;
                               });
                             }
-                          } catch (e) {print(e);}
+                          } catch (e) {
+                            print(e);
+                          }
                         }
                       },
                       child: Container(
