@@ -46,7 +46,7 @@ class _FlChartPageState extends State<FlChartPage3> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                   child: LineChart(
-                   mainChart(),
+                    showAvg ? mainChart():avgChart(),
                   ),
                 ),
               ),
@@ -60,7 +60,7 @@ class _FlChartPageState extends State<FlChartPage3> {
   LineChartData mainChart() {
     return LineChartData(
       gridData: FlGridData(
-        show: true,
+        show: false,
         drawVerticalLine: true,
         getDrawingHorizontalLine: (value) {
           return FlLine(
@@ -171,7 +171,7 @@ class _FlChartPageState extends State<FlChartPage3> {
     );
   }
 
-  /*LineChartData avgChart() {
+  LineChartData avgChart() {
     return LineChartData(
       lineTouchData: LineTouchData(enabled: false),
       gridData: FlGridData(
@@ -227,13 +227,13 @@ class _FlChartPageState extends State<FlChartPage3> {
           getTitlesWidget: (value, meta) {
             String text = '';
             switch (value.toInt()) {
-              case 1:
+              case 60:
                 text = '10k';
                 break;
-              case 3:
+              case 85:
                 text = '30k';
                 break;
-              case 5:
+              case 100:
                 text = '50k';
                 break;
             }
@@ -255,8 +255,8 @@ class _FlChartPageState extends State<FlChartPage3> {
           border: Border.all(color: const Color(0xff37434d), width: 1)),
       minX: 0,
       maxX: 11,
-      minY: 0,
-      maxY: 6,
+      minY: 60,
+      maxY: 100,
       lineBarsData: [
         LineChartBarData(
           spots: [
@@ -270,12 +270,12 @@ class _FlChartPageState extends State<FlChartPage3> {
           ],
           isCurved: true,
           gradient: LinearGradient(colors: gradientColors),
-*//*          colors: [
+          /*colors: [
             ColorTween(begin: gradientColors[0], end: gradientColors[1])
                 .lerp(0.2),
             ColorTween(begin: gradientColors[0], end: gradientColors[1])
                 .lerp(0.2),
-          ],*//*
+          ]*/
           barWidth: 5,
           isStrokeCapRound: true,
           dotData: FlDotData(
@@ -288,5 +288,5 @@ class _FlChartPageState extends State<FlChartPage3> {
         ),
       ],
     );
-  }*/
+  }
 }
